@@ -63,6 +63,16 @@ MM_reloadPage(true);
           </object>
         </div></td>
       </tr>
+	  <tr>
+        <td><div align="center">
+          <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="167" height="44" align="middle">
+            <param name="BGCOLOR" value="">
+            <param name="movie" value="button5.swf">
+            <param name="quality" value="high">
+            <embed src="button5.swf" width="167" height="44" align="middle" quality="high" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" ></embed>
+          </object>
+        </div></td>
+      </tr>
       <tr>
         <td><div align="center">
           <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="167" height="44">
@@ -85,6 +95,7 @@ MM_reloadPage(true);
 		  {
 		  	case 1:$proses="form1.php";break;
 		  	case 2:$proses="surat.php";break;
+		  	case 3:$proses="form_notulen.php";break;
 		  }
 		  if ($proses)
 		  {
