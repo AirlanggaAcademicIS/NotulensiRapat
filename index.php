@@ -3,55 +3,59 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Untitled Document</title>
-<style type="text/css">
-<!--
-.style7 {color: #FFFFFF}
--->
-</style>
 </head>
 
 <body>
-<table width="1025" height="722" border="1" align="center">
-  <tr bordercolor="#FFFFFF">
-    <td height="175" background="UI/header.png"><div align="center"></div></td>
+<table width="1019" height="769" border="1" align="center">
+  <tr>
+    <td width="1027" height="177" background="new/header.png" bgcolor="#F0F0F0">&nbsp;</td>
   </tr>
   <tr>
-    <td height="514" background="UI/layout 1.png"><p>-</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <table width="256" border="0">
-      <tr>
-        <td><form id="form1" name="form1" method="post" action="">
-          <label>
-          <div align="center">
-            <input type="submit" name="Submit" value="Menulis Rapat" />
-          </div>
-          </label>
-        </form>
-        </td>
-      </tr>
-      <tr>
-        <td><form id="form2" name="form2" method="post" action="">
-          <label>
-          <div align="center">
-            <input type="submit" name="Submit2" value="Share hasil rapat " />
-          </div>
-          </label>
-                </form>
-        </td>
-      </tr>
-    </table>    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p>
-    <p>&nbsp;</p></td>
+    <td width="1027" height="534" background="new/layout 1.png"><p>&nbsp;</p>
+      <form id="form2" name="form2" method="post" action="">
+        <label></label>
+        <div align="center">
+          <select name="select" size="1">
+          </select>
+        </div>
+      </form>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <table width="139" border="1">
+        <tr>
+          <td width="129"><form id="form1" name="form1" method="post" action="">
+            <label>
+              <input type="submit" name="Submit" value="Verifikasi Undangan" />
+              </label>
+          </form>          </td>
+        </tr>
+      </table>
+      <table width="102" border="1">
+        <tr>
+          <td width="92"><input type="submit" name="Submit2" value="History Rapat" /></td>
+        </tr>
+      </table>
+      <table width="129" border="1">
+        <tr>
+          <td width="119"><form id="form4" name="form4" method="post" action="">
+            <label>
+              <input type="submit" name="Submit3" value="List Peserta Rapat" />
+              </label>
+          </form>          </td>
+        </tr>
+      </table>    
+      <div align="center"></div></td>
   </tr>
   <tr>
-    <td height="23" background="UI/footer.jpg"><div align="right"><span class="style7">Copyright by kelompok 1 </span></div></td>
+    <td width="1027" height="23">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="23">&nbsp;</td>
   </tr>
 </table>
-<p>&nbsp;</p>
+<div align="center"></div>
 </body>
 </html>
