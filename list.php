@@ -6,11 +6,14 @@
 <style type="text/css">
 <!--
 .style7 {color: #FFFFFF}
+.style10 {font-size: 11px}
 -->
 </style>
 </head>
 
 <body>
+
+
 <table width="1025" height="722" border="1" align="center">
   <tr bordercolor="#FFFFFF">
     <td height="175" background="UI/header.png"><div align="center"></div></td>
@@ -22,28 +25,32 @@
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
-    <table width="256" border="0">
+    <p>&nbsp;</p>
+    <table width="255" border="0">
+      <tr>
+        <td width="249"><div align="center">List Rapat : </div></td>
+      </tr>
       <tr>
         <td><form id="form1" name="form1" method="post" action="">
-          <label>
-          <div align="center">
-            <input type="submit" name="Submit" value="Menulis Rapat" />
-          </div>
-          </label>
+          <label></label>
         </form>
         </td>
       </tr>
       <tr>
-        <td><form id="form2" name="form2" method="post" action="">
-          <label>
-          <div align="center">
-            <input type="submit" name="Submit2" value="Share hasil rapat " />
-          </div>
-          </label>
-                </form>
-        </td>
+        <td> <div align="center"><a href='http://localhost/PSI_coba/index.php'>
+            <div align="center">Evaluasi Dosen, <span class="style10">Rabu, 13 April 2016</span></div>
+        </div></td>
+
       </tr>
-    </table>    <p>&nbsp;</p>
+      <tr>
+        <td><div align="center"></div></td>
+      </tr>
+      <tr>
+        <td><div align="center"><a href='http://localhost/PSI_coba/index.php'>Pembahasan topik skripsi mahasiswa </td>
+      </tr>
+    </table>
+    <p align="left">&nbsp;</p>
+    <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p></td>
@@ -53,5 +60,7 @@
   </tr>
 </table>
 <p>&nbsp;</p>
+
+
 </body>
 </html>
