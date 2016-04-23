@@ -43,34 +43,14 @@
 		});
 		});
 		function validator(){
-			if (!form1.nosurat.value){
-			   alert("Isi Nomor Surat");
-			   form1.nosurat.focus();
+			if (form1.penanggungjawab.value == 'Penanggung Jawab'){
+			   alert("Pilih Penanggungjawab Rapat");
+			   form1.penanggungjawab.focus();
 			   return (false);
 			}
-			if (!form1.hal.value){
-			   alert("Isi Hal");
-			   form1.hal.focus();
-			   return (false);
-			}
-			if (!form1.tanggal.value){
-			   alert("Isi Tanggal Rapat");
-			   form1.tanggal.focus();
-			   return (false);
-			}
-			if (!form1.tempat.value){
-			   alert("Isi Tempat Rapat");
-			   form1.tempat.focus();
-			   return (false);
-			}
-			if (!form1.waktu_mulai.value){
-			   alert("Isi Waktu Mulai Rapat");
-			   form1.waktu_mulai.focus();
-			   return (false);
-			}
-			if (!form1.waktu_selesai.value){
-			   alert("Isi Waktu Selesai Rapat");
-			   form1.waktu_selesai.focus();
+			if (form1.notulen.value == 'Notulen'){
+			   alert("Pilih Notulen Rapat");
+			   form1.notulen.focus();
 			   return (false);
 			}
 			var checkboxs=document.getElementsByName("peserta[]");
@@ -82,7 +62,7 @@
         		}
     		}
     		if(!okay){
-				alert("Isi Peserta Rapat");
+				alert("Pilih Peserta Rapat");
 				return (false);
 			}
         	return (true);
@@ -177,7 +157,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="nosurat" type="text" placeholder="Nomor Surat" size="30" /></td>
+            <input name="nosurat" type="text" placeholder="Nomor Surat" size="30" oninvalid="this.setCustomValidity('Isikan Nomor Surat')" oninput="setCustomValidity('')" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -186,7 +166,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="hal" type="text" placeholder="Hal" size="30" /></td>
+            <input name="hal" type="text" placeholder="Hal" size="30" oninvalid="this.setCustomValidity('Isikan Hal Surat')" oninput="setCustomValidity('')" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -195,7 +175,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="tanggal" type="text" placeholder="Hari Tanggal" size="30" id="tanggal"/></td>
+            <input name="tanggal" type="text" placeholder="Hari Tanggal" size="30" id="tanggal" oninvalid="this.setCustomValidity('Pilih Tanggal Rapat')" onchange="setCustomValidity('')" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -204,7 +184,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="tempat" type="text" placeholder="Tempat Rapat" size="30" /></td>
+            <input name="tempat" type="text" placeholder="Tempat Rapat" size="30" oninvalid="this.setCustomValidity('Isikan Tempat Rapat')" oninput="setCustomValidity('')" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -213,7 +193,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="waktu_mulai" type="text" placeholder="Waktu Mulai Rapat" size="30" id="waktu_mulai"/></td>
+            <input name="waktu_mulai" type="text" placeholder="Waktu Mulai Rapat" size="30" id="waktu_mulai" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -222,7 +202,7 @@ select:invalid { color: #6B7373; }
 	  <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="waktu_selesai" type="text" placeholder="Waktu Selesai Rapat" size="30" id="waktu_selesai"/></td>
+            <input name="waktu_selesai" type="text" placeholder="Waktu Selesai Rapat" size="30" id="waktu_selesai" required/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -231,7 +211,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>
-            <select name="penanggungjawab" id="penanggungjawab" required>
+            <select name="penanggungjawab" id="penanggungjawab" oninvalid="this.setCustomValidity('Pilih Penanggungjawab Rapat')" onchange="setCustomValidity('')" required>
 			<optgroup style="max-height: 80px;">
     			<option disabled selected hidden>Penanggung Jawab</option>
 			<?php
@@ -251,7 +231,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>
-            <select id="notulen" name="notulen" required>
+            <select id="notulen" name="notulen" oninvalid="this.setCustomValidity('Pilih Notulen Rapat')" onchange="setCustomValidity('')" required>
 			<optgroup style="max-height: 80px;">
     			<option disabled selected hidden>Notulen</option>
 			</optgroup>
@@ -275,9 +255,11 @@ select:invalid { color: #6B7373; }
 			var x=1;
 			$(document).ready(function(){
 				$("#plus_bahas").click(function(){
-					$('#list_bahas').append(x+". "+$("#input_bahas").val()+"\n");
-					$("#input_bahas").val("");
-					x++;
+					if ($('#input_bahas').val() != '') {
+						$('#list_bahas').append(x+". "+$("#input_bahas").val()+"\n");
+						$("#input_bahas").val("");
+						x++;
+					}
 				});
 			});
 		</script>
