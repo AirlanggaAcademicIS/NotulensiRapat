@@ -1,61 +1,94 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<?php
+session_start();
+if($_GET[logout]==1){
+	unset($_SESSION[username]);
+}
+?>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Untitled Document</title>
+<title>Login</title>
+<meta http-equiv="Content-Type" content="text/html;">
+<!--Fireworks MX 2004 Dreamweaver MX 2004 target.  Created Fri Mar 25 12:39:42 GMT+0700 (SE Asia Standard Time) 2016-->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+<style type="text/css">
+  input[type="text"] {
+    border: 0;
+	font:Arial, Helvetica, sans-serif;
+	font-size:15px;
+    background: transparent;
+/*    background-color:#FFFFCC;*/
+  }
+</style>
+<style type="text/css">
+  input[type="password"] {
+    border: 0;
+	font:Arial, Helvetica, sans-serif;
+	font-size:15px;
+    background: transparent;
+/*    background-color:#FFFFCC;*/
+  }
+</style>
+<style type="text/css">
+  input[type="submit"] {
+    border: 0;
+	font:Arial, Helvetica, sans-serif;
+	font-size:20px;
+    background: transparent;
+  }
+</style>
 </head>
-
-<body>
-<table width="1019" height="769" border="1" align="center">
+<body bgcolor="#CEF2F2">
+<br>
+<p>&nbsp;</p>	
+<table width="636" height="333" border="0" align="center" cellpadding="0" cellspacing="0" background="image/login.png">
+<!-- fwtable fwsrc="login.png" fwbase="index.png" fwstyle="Dreamweaver" fwdocid = "1276832135" fwnested="0" -->
+  <form name="form1" method="post" action="">
   <tr>
-    <td width="1027" height="177" background="new/header.png" bgcolor="#F0F0F0">&nbsp;</td>
-  </tr>
-  <tr>
-    <td width="1027" height="534" background="new/layout 1.png"><p>&nbsp;</p>
-      <form id="form2" name="form2" method="post" action="">
-        <label></label>
-        <div align="center">
-          <select name="select" size="1">
-          </select>
-        </div>
-      </form>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <p>&nbsp;</p>
-      <table width="139" border="1">
-        <tr>
-          <td width="129"><form id="form1" name="form1" method="post" action="">
-            <label>
-              <input type="submit" name="Submit" value="Verifikasi Undangan" />
-              </label>
-          </form>          </td>
-        </tr>
-      </table>
-      <table width="102" border="1">
-        <tr>
-          <td width="92"><input type="submit" name="Submit2" value="History Rapat" /></td>
-        </tr>
-      </table>
-      <table width="129" border="1">
-        <tr>
-          <td width="119"><form id="form4" name="form4" method="post" action="">
-            <label>
-              <input type="submit" name="Submit3" value="List Peserta Rapat" />
-              </label>
-          </form>          </td>
-        </tr>
-      </table>    
-      <div align="center"></div></td>
-  </tr>
-  <tr>
-    <td width="1027" height="23">&nbsp;</td>
-  </tr>
-  <tr>
-    <td height="23">&nbsp;</td>
-  </tr>
+   <td width="397">
+   	<div id="Layer1" style="position:relative; width:100px; height:20px; z-index:1; left: 360px; top: 9px;"><input name="username" type="text" size="20" maxlength="25" placeholder="Username">
+   	</div>
+	<div id="Layer2" style="position:relative; width:100px; height:20px; z-index:1; left: 360px; top: 34px;"><input name="password" type="password" size="20" maxlength="13" placeholder="Password">
+	</div>   
+	<div id="Layer3" style="position:relative; width:166px; height:20px; z-index:1; left: 515px; top: -45px;"><input type="image" name="submit" src="image/login_button.png" border="0" alt="Submit" /></div>   
+   </td>
+   </tr>
+</form>
 </table>
-<div align="center"></div>
+<?php
+if ($_POST[username])
+{
+	include("koneksi.php");
+	$query="select * from user where username='$_POST[username]' and password='$_POST[password]'";
+	$hasil=mysql_query($query);
+	$r=mysql_fetch_array($hasil);
+	if ($r[username])
+	{
+		$_SESSION[username]=$_POST[username];
+		$_SESSION[namaprofil]=$r['nm_lengkap'];
+		$_SESSION[nomorinduk]=$r['nomor_induk'];
+		switch($r[otoritas]){
+			case 1 : $_SESSION[petugas]="Administrator"; $_SESSION[menuawal]=true;?><script>window.location="hal_admin.php";</script><?php break;
+			case 2 : $_SESSION[petugas]="Ketua Prodi"; $_SESSION[menuawal]=true;?><script>window.location="hal_kaprodi.php";</script><?php break;
+			case 3 : $_SESSION[petugas]="Tata Usaha"; $_SESSION[menuawal]=true;?><script>window.location="hal_tu.php";</script><?php break;
+		}
+	}
+	else
+	{
+		?>
+		<script>alert("Maaf Anda Tidak Boleh Login..")
+		</script>
+		<?php
+	}
+}	
+?>
 </body>
 </html>

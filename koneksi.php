@@ -1,8 +1,13 @@
-<?php 
-mysql_connect("localhost","root","");
-$find_db=mysql_select_db("notulensirapat"); 
-if($find_db){
-    echo "db ada";
-}
-else echo "db tidak ada";
+<?php
+$my['host'] = "localhost";
+$my['user'] = "root";
+$my['pass'] = "";
+$my['dbs'] = "belajarphp";
+
+$koneksi=mysql_connect($my['host'],$my['user'],$my['pass']);
+if (! $koneksi){
+  echo "Gagal Koneksi..!".mysql_error();
+  }
+mysql_select_db($my['dbs'])
+or die ("Database not Found".mysql_error());
 ?>

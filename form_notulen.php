@@ -1,18 +1,28 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<script src='lib/tinymce/tinymce.min.js'></script>
-  <script>
-  tinymce.init({
-    selector: '#bahas_rapat'
-  });
-  tinymce.init({
-    selector: '#kesimpulan'
-  });
-  tinymce.init({
-    selector: '#rekomendasi'
-  });
-  </script>
+<script src='lib/ckeditor/ckeditor.js'></script>
+  
+  <script type="text/javascript">
+    <!-- 
+        function validator()
+        {
+        // Check whether the value of the element 
+        // text_name from the form named text_form is null
+        if (!form1.pimpinrapat.value)
+        {
+          // If it is display and alert box
+           alert("Isi Pimpinan Rapat");
+          // Place the cursor on the field for revision
+           form1.pimpinrapat.focus();
+          // return false to stop further processing
+           return (false);
+        }
+        // If text_name is not null continue processing
+        return (true);
+        }
+        -->
+</script>
   <style type="text/css">
 <!--
 .style1 {font-family: Arial, Helvetica, sans-serif}
@@ -23,16 +33,17 @@
 </head>
 <body>
 
- <style type="text/css">
+<style type="text/css">
   input[type="text"] {
     border: 0;
+	padding-left: 10px;
 	font:Arial, Helvetica, sans-serif;
 	font-size:20px;
 	background-color: rgba(255, 255, 255, 0.5);
   }
 </style>
 <br><br/>
-<form name="form1" id="form1" method="post" action="">
+<form name="form1" id="form1" method="post" action="" onsubmit="return validator()">
 <table width="100%" >
   <tr>
   	<td width="30"><table width="100%" >
@@ -40,7 +51,7 @@
     <td width="700"><table width="100%" >
       <tr>
         <td>
-          <input name="pimpinrapat" type="text" placeholder=" Pimpinan Rapat" size="30" />
+          <input name="pimpinrapat" type="text" placeholder="Pimpinan Rapat" size="30" /><br 	/>
         </td>
       </tr>
       <tr>
@@ -48,7 +59,7 @@
       </tr>
       <tr>
         <td>
-          <input name="haritgl" type="text" placeholder=" Hari, Tanggal" size="30" />
+          <input name="haritgl" type="text" placeholder="Hari, Tanggal" size="30" />
         </td>
       </tr>
       <tr>
@@ -56,14 +67,14 @@
       </tr>
       <tr>
         <td>
-          <input name="tempatrapat" type="text" placeholder=" Tempat Rapat" size="30" />
+          <input name="tempatrapat" type="text" placeholder="Tempat Rapat" size="30" />
         </td>
       </tr>
     </table></td>
     <td width="605"><table width="100%" >
       <tr>
         <td>
-          <input name="wakturapat" type="text" placeholder=" Waktu Rapat" size="30" />
+          <input name="wakturapat" type="text" placeholder="Waktu Rapat" size="30" />
         </td>
       </tr>
       <tr>
@@ -71,7 +82,7 @@
       </tr>
       <tr>
         <td>
-          <input name="penanggungjawab" type="text" placeholder=" Penanggung Jawab" size="30" />
+          <input name="penanggungjawab" type="text" placeholder="Penanggung Jawab" size="30" />
         </td>
       </tr>
       <tr>
@@ -79,7 +90,7 @@
       </tr>
       <tr>
         <td>
-          <input name="hadirpeserta" type="text" placeholder=" Kehadiran Peserta" size="30" />
+          <input name="hadirpeserta" type="text" placeholder="Kehadiran Peserta" size="30" />
         </td>
       </tr>
     </table></td>
@@ -150,30 +161,10 @@
   </tr>
 </table>
 </form>
-<?php
-if($_POST[Submit]){
-	if($_POST[pimpinrapat] and $_POST[haritgl] and $_POST[tempatrapat] and $_POST[wakturapat] and $_POST[penanggungjawab] and $_POST[hadirpeserta]){
-		if($_POST[checkbox]){
-			?>
-		<script>alert("Data Berhasil Tersimpan")
-		window.location="menu_petugas.php";
-		</script>
-		<?php
-		}
-		else{
-			?>
-		<script>alert("Anda Belum Verifikasi Notulen!")</script>
-		<?php
-		}
-		
-	}
-	else{
-		?>
-		<script>alert("Lengkapi Form")
-		</script>
-		<?php
-	}
-}
-?>
+<script>
+	CKEDITOR.replace( 'bahas_rapat' );
+	CKEDITOR.replace( 'kesimpulan' );
+	CKEDITOR.replace( 'rekomendasi' ); 
+</script>
 </body>
 </html>
