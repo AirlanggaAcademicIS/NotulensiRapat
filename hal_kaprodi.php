@@ -74,7 +74,7 @@ MM_reloadPage(true);
 		    <div id='cssmenu'>
 				<ul>
 				   <li class='<?php if($_SESSION[menuawal]){echo 'active';}else{if($_GET[id]==1){ echo 'active';}} ?>'><a href='?id=1'><span>Buat Undangan</span></a></li>
-				   <li class='<?php if($_GET[id]==2){ echo 'active';} ?>'><a href='?id=2'><span>Sebar Undangan</span></a></li>
+				   <li class='<?php if($_GET[id]==2){ echo 'active';} ?>'><a href='?id=2'><span>Konfirmasi Rapat</span></a></li>
 				   <li class='last'><a href='index.php?logout=1'><span>Logout</span></a></li>
 				</ul>
 			</div>
@@ -91,18 +91,25 @@ MM_reloadPage(true);
 		  <div id="Layer1" style="background-color:#FFFFCC;position:relative; text-align:center; width:180px; height:20px; z-index:1; left: 630px; top: -10px;"><span style="font-family: Arial, Helvetica, sans-serif"><strong><?php echo $_SESSION[petugas] ?></strong></b></span></div>
 		  <div id="Layer2" style="position:relative; text-align:center; width:180px; height:20px; z-index:1; left: 630px; top: 5px;"><b>Date : <?php $sekarang = date('d-m-Y'); echo $sekarang ?></b></div>
 		  <?php
-		  if($_SESSION[menuawal]){
-		  	include('buat_undangan.php');
+		  if($_GET[konf]){
+		  	include('konfirmasi_undangan.php');
+			
 		  }
+
 		  else{
-		  	switch ($_GET[id]){
-				case 1:$proses="buat_undangan.php";break;
-				case 2:$proses="surat.php";break;
-				case 3:$proses="form_notulen.php";break;
-		  	}
-		  	if ($proses){
-			 include($proses);
-		  	}
+			  if($_SESSION[menuawal] || $_GET[id]==null){
+				include('ambil_undangan.php');
+			  }
+			  else{
+				switch ($_GET[id]){
+					case 1:$proses="ambil_undangan.php";break;
+					case 2:$proses="ambil_isi_rapat.php";break;
+					case 3:$proses="form_notulen.php";break;
+				}
+				if ($proses){
+				 include($proses);
+				}
+			  }
 		  }
 		  ?>
 		  </td>
