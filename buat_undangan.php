@@ -246,6 +246,14 @@ select:invalid { color: #6B7373; }
             <tr>
               <td width="54%"><input name="input_bahas" type="text" placeholder="Pembahasan Rapat" id="input_bahas" size="27"/></td>
               <td width="46%"><div id='plus_bahas' style="cursor: pointer"><img src="image/plus.png"/></div></td>
+			  <script>
+				$(document).ready(function(){
+					$('#input_bahas').keypress(function(e){
+					  if(e.keyCode==13)
+					  $('#plus_bahas').click();
+					});
+				});
+			  </script>
             </tr>
           </table></td>
       </tr>
@@ -302,6 +310,11 @@ select:invalid { color: #6B7373; }
   </tr>
 </table>
 </form>
+<script>
+$('form input').on('keypress', function(e) {
+    return e.which !== 13;
+});
+</script>
 <?php
 if(isset($_POST['Submit'])){
 $berhasil=true;
