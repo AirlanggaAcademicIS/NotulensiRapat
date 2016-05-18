@@ -5,7 +5,6 @@
 <title>Untitled Document</title>
 </head>
 <body>
-
 <table width="100%" border="0">
   <tr>
     <td width="37"><img src="image/Graphic1.png" width="36" height="30" /></td>
@@ -14,42 +13,65 @@
       <select
      <span class="caret"></span></button>
     <ul class="dropdown-menu">
-  <option value="---Pilihan Topik Rapat---">---Pilihan Topik Rapat---</option>
-  <option value="saab">Saab</option>
-  <option value="opel">Opel</option>
-  <option value="audi">Audi</option>
+    <a href="?peserta=<?php echo $hasil['no_surat'];?>">
+    <option value="---Pilihan Topik Rapat---"><em><strong>---Pilihan Topik Rapat---</strong></em></option>
+    </a><strong>
+    <option value="---Pilihan Topik Rapat---"></option>
+    </strong>
+    <option value="---Pilihan Topik Rapat---"></option>
+  <?php
+	$sql = mysql_query("SELECT * FROM rapat where status='1'");
+	while($hasil = mysql_fetch_array($r)){
+	?>
+  <tr>
+    <td width="66%"><table width="100%" border="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
+    <td width="34%"><div align="center">
+      <p><img src="../notulensirapat_jadi/image/konfirmasi_button.png" width="100" height="32" /></p>
+  <?php } ?>
       </select>
     </form>
     </td>
   </tr>
   <tr>
-    <td><img src="image/Tanggal.png" width="35" height="29" /></td>
-    <td><form id="form2" name="form2" method="post" action="">
-      <label>
-        <input type="text" name="textfield2" />
-        </label>
-    </form>
-    </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
   <tr>
-    <td><img src="image/Location.png" width="35" height="30" /></td>
-    <td><form id="form3" name="form3" method="post" action="">
-      <label>
-        <input type="text" name="textfield3" />
-        </label>
-    </form>
-    </td>
-  </tr>
-  <tr>
-    <td><img src="image/Time.png" width="32" height="37" /></td>
-    <td><form id="form4" name="form4" method="post" action="">
-      <label>
-        <input type="text" name="textfield4" />
-        </label>
-    </form>
-    </td>
+    <td><img src="image/Tanggal.png" width="36" height="30" /></td>
+    <td>&nbsp;</td>
   </tr>
 </table>
+<table width="100%" border="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td><img src="image/Time.png" width="36" height="30" /></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td><img src="image/Location.png" alt="" width="36" height="30" /></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <table width="100%" border="1">
   <tr>
@@ -64,7 +86,7 @@
                     <blockquote>
                       <blockquote>
                         <blockquote>
-                          <p>Peserta yang Hadir </p>
+                          <h1>DaftarPeserta</h1>
                         </blockquote>
                       </blockquote>
                     </blockquote>
