@@ -150,6 +150,14 @@ select:invalid { color: #6B7373; }
 </style>
 <br />
 <br />
+<?php 
+$r = mysql_query("select * from jumlah_rapat");
+$hasil = mysql_fetch_array($r);
+$mnth = array(1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+$akhir = $mnth[(int)date('m')]."/". date("Y");
+$jumlah_rapat=$hasil['jumlah'];
+$nomor_rapat=$jumlah_rapat."/Rapat/".$akhir;
+?>
 <form name="form1" id="form1" method="post" action="" onsubmit="return validator()">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
@@ -157,7 +165,7 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="nosurat" type="text" placeholder="Nomor Surat" size="30" oninvalid="this.setCustomValidity('Isikan Nomor Surat')" oninput="setCustomValidity('')" required/></td>
+            <input name="nosurat" type="text" placeholder="Nomor Surat" size="30" value="<?php echo $nomor_rapat;?>" oninvalid="this.setCustomValidity('Isikan Nomor Surat')" oninput="setCustomValidity('')" readonly/></td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -175,7 +183,20 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="tanggal" type="text" placeholder="Hari Tanggal" size="30" id="tanggal" oninvalid="this.setCustomValidity('Pilih Tanggal Rapat')" onchange="setCustomValidity('')" required/></td>
+            <input name="tanggal" type="text" placeholder="Hari Tanggal" size="30" id="tanggal" oninvalid="this.setCustomValidity('Pilih Tanggal Rapat')" onchange="setCustomValidity('')" autocomplete="off" required/>
+      		<div style="position:relative; width:0px; height:0px; z-index:1; left: 289px; top: -26px;"><img src="image/tgl.png" width="28" height="25" /></div>
+		</td>
+	  </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td>&nbsp;
+            <input name="tempat" type="text" placeholder="Tempat Rapat" size="30" oninvalid="this.setCustomValidity('Isikan Tempat Rapat')" oninput="setCustomValidity('')" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 293px; top: -27px;"><img src="image/tempat.png" width="22" height="28" /></div>
+		</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -184,16 +205,9 @@ select:invalid { color: #6B7373; }
       <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="tempat" type="text" placeholder="Tempat Rapat" size="30" oninvalid="this.setCustomValidity('Isikan Tempat Rapat')" oninput="setCustomValidity('')" required/></td>
-      </tr>
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-      <tr height="30">
-        <td width="10">&nbsp;</td>
-        <td>&nbsp;
-            <input name="waktu_mulai" type="text" placeholder="Waktu Mulai Rapat" size="30" id="waktu_mulai" required/></td>
+            <input name="waktu_mulai" type="text" placeholder="Waktu Mulai Rapat" size="30" id="waktu_mulai" autocomplete="off" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 289px; top: -28px;"><img src="image/jam.png" width="29" height="28" /></div>
+		</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -202,7 +216,9 @@ select:invalid { color: #6B7373; }
 	  <tr height="30">
         <td width="10">&nbsp;</td>
         <td>&nbsp;
-            <input name="waktu_selesai" type="text" placeholder="Waktu Selesai Rapat" size="30" id="waktu_selesai" required/></td>
+            <input name="waktu_selesai" type="text" placeholder="Waktu Selesai Rapat" size="30" id="waktu_selesai" autocomplete="off" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 289px; top: -28px;"><img src="image/jam.png" width="29" height="28" /></div>
+		</td>
       </tr>
       <tr>
         <td>&nbsp;</td>
@@ -318,12 +334,12 @@ $('form input').on('keypress', function(e) {
 <?php
 if(isset($_POST['Submit'])){
 $berhasil=true;
-$query="insert into peserta_rapat values ('$_POST[nosurat]','1','$_POST[penanggungjawab]')";
+$query="insert into peserta_rapat values ('$_POST[nosurat]','1','$_POST[penanggungjawab]','0','0','')";
 mysql_query($query);
 if(mysql_errno()){
 	$berhasil=false;
 }
-$query="insert into peserta_rapat values ('$_POST[nosurat]','2','$_POST[notulen]')";
+$query="insert into peserta_rapat values ('$_POST[nosurat]','2','$_POST[notulen]','0','0','')";
 mysql_query($query);
 if(mysql_errno()){
 	$berhasil=false;
@@ -331,13 +347,19 @@ if(mysql_errno()){
 $peserta = $_POST['peserta'];
 $length = count($peserta);
    for($x = 0; $x < $length; $x++) {
-	   $query="insert into peserta_rapat values ('$_POST[nosurat]','3','$peserta[$x]')";
+	   $query="insert into peserta_rapat values ('$_POST[nosurat]','3','$peserta[$x]','0','0','')";
 	   mysql_query($query);
 	   if(mysql_errno()){
        		$berhasil=false;
 	   }
    }
-$query="insert into rapat values ('$_POST[nosurat]','$_POST[hal]','$_POST[tanggal]','$_POST[tempat]','$_POST[waktu_mulai]','$_POST[waktu_selesai]','$_POST[list_bahas]', '0')";
+$query="insert into rapat values ('$_POST[nosurat]','$_POST[hal]','$_POST[tanggal]','$_POST[tempat]','$_POST[waktu_mulai]','$_POST[waktu_selesai]','$_POST[list_bahas]','','','','','0')";
+mysql_query($query);
+if(mysql_errno()){
+	$berhasil=false;
+}
+$jumlah_rapat++;
+$query="update jumlah_rapat set jumlah = '$jumlah_rapat'";
 mysql_query($query);
 if(mysql_errno()){
 	$berhasil=false;
@@ -345,6 +367,7 @@ if(mysql_errno()){
 if($berhasil){
 ?>
 	<script>alert("Berhasil Membuat Undangan dan Dikirim ke Ketua Prodi");</script>
+	<script>window.location="?id=1";</script>
 <?php
 }
 }
