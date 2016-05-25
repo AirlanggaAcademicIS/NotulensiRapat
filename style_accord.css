@@ -1,0 +1,122 @@
+body{background-size:cover;
+background-attachment:fixed;
+background-position:center;}
+.tbl{background:rgba(255,255,255,0.6);
+border-radius:6px;}
+body, input{  font-family: Calibri, Arial; }
+#accordion {
+    list-style: none;
+    padding: 0 0 0 0;
+    width: 350px;
+
+}
+#accordion li{
+	
+    display: block;
+    background-color:#0000FF;
+    color:#FFFFFF;
+    font-weight: bold;
+    margin: 1px;
+    cursor: pointer;
+	padding:5px;
+	height:20px;
+	text-align:center;
+    }
+#accordion ul {
+    list-style: none;
+    padding: 10px;
+    display: none;
+}
+#accordion ul li{
+    font-weight: normal;
+    cursor: auto;
+    background:rgba(0,0,0,0.0);
+    padding: 0 0 0 7px;
+}
+#accordion a {
+    text-decoration: none;
+}
+#accordion a:hover {
+    text-decoration: underline;
+}
+
+
+
+#accordion2 {
+    list-style: none;
+    padding: 0 0 0 0;
+    width: 250px;
+
+}
+#accordion2 li{
+	border-radius:7px;
+    display: block;
+    background-color:#F3474A;
+    color:#FFFFFF;
+    font-weight: bold;
+    margin: 1px;
+    cursor: pointer;
+	padding:5px;
+	height:20px;
+	text-align:center;
+	
+    }
+
+#accordion2 ul {
+    list-style: none;
+    padding: 10px;
+    display: none;
+}
+#accordion2 ul li{
+    font-weight: normal;
+    cursor: auto;
+	background:rgba(0,0,0,0.0);
+    padding: 0 0 0 7px;
+}
+#accordion2 a {
+    text-decoration: none;
+}
+#accordion2 a:hover {
+    text-decoration: underline;
+}
+
+
+
+.blok{
+	max-width:999px;
+	
+}
+.bb{
+	position: absolute;
+	left: 874px;
+	top: 142px;
+	
+	
+}
+.bb2{
+	position:absolute;
+	top:142px;
+	left:588px;
+	
+	
+	
+}
+.btn{background-color:#4581DD;
+border:0px;
+font-family:"Calibri";
+font-size:14px;
+height:25px;
+color:#FFFFFF;
+cursor:pointer;}
+.btn:hover{background:#8DBADF;}
+.nama{
+font-family:"Calibri";
+font-size:18px;
+color:#FFFFFF;
+margin-top:45px;}
+.nama p{ background-color:#6B6767;
+border-radius:0px 7px 7px 0px;
+height:20px;
+padding:5px;
+margin:5px;}
+

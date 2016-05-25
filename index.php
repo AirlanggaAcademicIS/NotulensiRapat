@@ -1,94 +1,81 @@
-<?php
-session_start();
-if($_GET[logout]==1){
-	unset($_SESSION[username]);
-}
-?>
+<!doctype html>
 <html>
 <head>
-<title>Login</title>
-<meta http-equiv="Content-Type" content="text/html;">
-<!--Fireworks MX 2004 Dreamweaver MX 2004 target.  Created Fri Mar 25 12:39:42 GMT+0700 (SE Asia Standard Time) 2016-->
-<script language="JavaScript" type="text/JavaScript">
-<!--
-function MM_reloadPage(init) {  //reloads the window if Nav4 resized
-  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
-    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
-  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
-}
-MM_reloadPage(true);
-//-->
-</script>
-<style type="text/css">
-  input[type="text"] {
-    border: 0;
-	font:Arial, Helvetica, sans-serif;
-	font-size:15px;
-    background: transparent;
-/*    background-color:#FFFFCC;*/
-  }
-</style>
-<style type="text/css">
-  input[type="password"] {
-    border: 0;
-	font:Arial, Helvetica, sans-serif;
-	font-size:15px;
-    background: transparent;
-/*    background-color:#FFFFCC;*/
-  }
-</style>
-<style type="text/css">
-  input[type="submit"] {
-    border: 0;
-	font:Arial, Helvetica, sans-serif;
-	font-size:20px;
-    background: transparent;
-  }
-</style>
+<meta charset="utf-8">
+
+<link href="style_accord.css" rel="stylesheet" type="text/css" />
+<title>Untitled Document</title>
 </head>
-<body bgcolor="#CEF2F2">
-<br>
-<p>&nbsp;</p>	
-<table width="636" height="333" border="0" align="center" cellpadding="0" cellspacing="0" background="image/login.png">
-<!-- fwtable fwsrc="login.png" fwbase="index.png" fwstyle="Dreamweaver" fwdocid = "1276832135" fwnested="0" -->
-  <form name="form1" method="post" action="">
-  <tr>
-   <td width="397">
-   	<div id="Layer1" style="position:relative; width:100px; height:20px; z-index:1; left: 360px; top: 9px;"><input name="username" type="text" size="20" maxlength="25" placeholder="Username">
-   	</div>
-	<div id="Layer2" style="position:relative; width:100px; height:20px; z-index:1; left: 360px; top: 34px;"><input name="password" type="password" size="20" maxlength="13" placeholder="Password">
-	</div>   
-	<div id="Layer3" style="position:relative; width:166px; height:20px; z-index:1; left: 515px; top: -45px;"><input type="image" name="submit" src="image/login_button.png" border="0" alt="Submit" /></div>   
-   </td>
-   </tr>
-</form>
-</table>
-<?php
-if ($_POST[username])
-{
-	include("koneksi.php");
-	$query="select * from user where username='$_POST[username]' and password='$_POST[password]'";
-	$hasil=mysql_query($query);
-	$r=mysql_fetch_array($hasil);
-	if ($r[username])
-	{
-		$_SESSION[username]=$_POST[username];
-		$_SESSION[namaprofil]=$r['nm_lengkap'];
-		$_SESSION[nomorinduk]=$r['nomor_induk'];
-		switch($r[otoritas]){
-			case 1 : $_SESSION[petugas]="Administrator"; $_SESSION[menuawal]=true;?><script>window.location="hal_admin.php";</script><?php break;
-			case 2 : $_SESSION[petugas]="Ketua Prodi"; $_SESSION[menuawal]=true;?><script>window.location="hal_kaprodi.php";</script><?php break;
-			case 3 : $_SESSION[petugas]="Tata Usaha"; $_SESSION[menuawal]=true;?><script>window.location="hal_tu.php";</script><?php break;
-		}
-	}
-	else
-	{
-		?>
-		<script>alert("Maaf Anda Tidak Boleh Login..")
-		</script>
-		<?php
-	}
-}	
+
+<body background="gambar/latar.png">
+<div align="center" style="margin-bottom:20px; max-width:960px; margin-left:12.2%;">
+<img src="gambar/header.png" width="960" height="108" style="border-radius:7px; box-shadow:5px 5px 5px #000000;">
+</div>
+<table align="center" width="960" height="491">
+  <tbody>
+    <tr>
+      <td width="281" height="88" valign="bottom"><img src="gambar/head2.png" width="281" height="70"></td>
+      <td width="667" valign="top" style="padding:20px;">
+      
+      <form method="post" action="" enctype="multipart/form-data">
+     
+      <div class="bb">
+<ul id="accordion2">
+    <li>Tema Rapat</li>
+    <ul>
+        <li><input type="text" name="key" placeholder="Masukkan Keyword..." style="width:150px; height:24px; border:0px;"><input class="btn" type="submit" name="cari" value="CARI"></li>
+
+    </ul>
+    </ul>
+    </div>
+    
+      </form></td>
+    </tr>
+    <tr>
+    <td height="349" style="padding:20px;background:rgba(255,255,255,0.6); border-radius:7px 0px 0px 7px; border-right:2px dashed #05249C;" align="center" valign="top">
+    <img src="gambar/user_icon.png" width="150" height="150" style="border-radius:300px;">
+    <p>Ardina Sovitasari</p>
+    021352567
+    <div align="center" class="nama">
+    <p>Konfirmasi Kehadiran</p>
+    <p>HISTORI RAPAT</p>
+    </div>
+    </td>
+    <td valign="top" style="padding:20px;background:rgba(255,255,255,0.6); border-radius:0px 7px 7px 0px; border-left:2px dashed #05249C;">
+    <?php
+include 'kontek.php';
+@$nama=$_POST[key];
+@$cari=$_POST[cari];
+@$per=$_POST[per];
+
+if($cari=="CARI"){
+	if($nama==""){
+		echo"Kotak Pencarian Harap Diisi";
+	}else{
+		@$ambil=mysql_query("select*from rapat where tema like '%$nama%'");
+while($ray=mysql_fetch_array($ambil)){
 ?>
+
+<ul id="accordion">
+    <li><?php echo"$ray[tema], $ray[tgl_rapat]"; ?></li>
+    <ul>
+        <li><a href="#"><?php echo"$ray[kesimpulan]"; ?></a></li>
+    </ul>
+    </ul>
+    
+<?php
+}
+}
+}
+?>
+    </td>
+    </tr>
+    <tr>
+      <td height="44" colspan="2">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
 </body>
+<script type="text/javascript" src="jquery-latest.js"></script>
+<script type="text/javascript" src="accord.js"></script>
 </html>
