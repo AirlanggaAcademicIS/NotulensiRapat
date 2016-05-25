@@ -1,3 +1,4 @@
+<?php include ("koneksi.php");?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -13,67 +14,53 @@
       <select
      <span class="caret"></span></button>
     <ul class="dropdown-menu">
-    <a href="?peserta=<?php echo $hasil['no_surat'];?>">
-    <option value="---Pilihan Topik Rapat---"><em><strong>---Pilihan Topik Rapat---</strong></em></option>
-    </a><strong>
-    <option value="---Pilihan Topik Rapat---"></option>
-    </strong>
-    <option value="---Pilihan Topik Rapat---"></option>
-  <?php
-	$sql = mysql_query("SELECT * FROM rapat where status='1'");
-	while($hasil = mysql_fetch_array($r)){
-	?>
-  <tr>
-    <td width="66%"><table width="100%" border="0">
-      <tr>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
-    </table></td>
-    <td width="34%"><div align="center">
-      <p><img src="../notulensirapat_jadi/image/konfirmasi_button.png" width="100" height="32" /></p>
-  <?php } ?>
+  <?php 
+  $result=mysql_query("SELECT * FROM rapat where status ='1'");
+  while ($nama = mysql_fetch_array($result)){
+	  echo "<option value=\"$nama[no_surat]\">$nama[hal]</option>\n";
+  }
+  ?>
+  
       </select>
     </form>
     </td>
   </tr>
   <tr>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td><form id="form2" name="form2" method="post" action="">
+    </form>
+    </td>
   </tr>
   <tr>
-    <td><img src="image/Tanggal.png" width="36" height="30" /></td>
+    <td><img src="image/Tanggal.png" width="35" height="29" /></td>
+    <td><form id="form3" name="form3" method="post" action="">
+    </form>
+    </td>
+  </tr>
+  <tr>
     <td>&nbsp;</td>
+    <td><form id="form4" name="form4" method="post" action="">
+    </form>
+    </td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td><img src="image/Location.png" width="35" height="30" /></td>
   </tr>
 </table>
 <table width="100%" border="0">
   <tr>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
   </tr>
 </table>
 <table width="100%" border="0">
   <tr>
-    <td><img src="image/Time.png" width="36" height="30" /></td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0">
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-<table width="100%" border="0">
-  <tr>
-    <td><img src="image/Location.png" alt="" width="36" height="30" /></td>
-    <td>&nbsp;</td>
+    <td><img src="image/Time.png" width="32" height="37" /></td>
   </tr>
 </table>
 <p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<table width="100%" border="1">
+<table width="100%" border="0">
   <tr>
     <td><blockquote>
       <blockquote>
@@ -86,7 +73,7 @@
                     <blockquote>
                       <blockquote>
                         <blockquote>
-                          <h1>DaftarPeserta</h1>
+                          <p>Peserta yang Hadir </p>
                         </blockquote>
                       </blockquote>
                     </blockquote>
