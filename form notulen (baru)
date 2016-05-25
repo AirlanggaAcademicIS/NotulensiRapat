@@ -1,0 +1,238 @@
+<?php include("koneksi.php");?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<script src='lib/ckeditor/ckeditor.js'>
+function validator(){
+			if (form1.penanggungjawab.value == 'Penanggung Jawab'){
+			   alert("Pilih Penanggungjawab Rapat");
+			   form1.penanggungjawab.focus();
+			   return (false);
+			}
+			if (form1.notulen.value == 'Notulen'){
+			   alert("Pilih Notulen Rapat");
+			   form1.notulen.focus();
+			   return (false);
+			}
+			var checkboxs=document.getElementsByName("peserta[]");
+    		var okay=false;
+    		for(var i=0,l=checkboxs.length;i<l;i++){
+		        if(checkboxs[i].checked){
+		            okay=true;
+            		break;
+        		}
+    		}
+    		if(!okay){
+				alert("Pilih Peserta Rapat");
+				return (false);
+			}
+    		if(!form1.verifikasi.checked){
+		    	alert("Setujui Verifikasi Undangan Rapat");
+				return (false);
+        	}
+			return (true);
+        }</script>
+  <style type="text/css">
+<!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+.style4 {font-family: Arial, Helvetica, sans-serif; font-size: 16px; }
+.style5 {font-family: Arial, Helvetica, sans-serif; font-size: 18px; }
+.combobackground { background-color: rgba(255, 255, 255, 0.5); }
+-->
+  </style>
+</head>
+<body>
+
+<style type="text/css">
+  input[type="text"] {
+    border: 0;
+	padding-left: 10px;
+	font:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	background-color: rgba(255, 255, 255, 0.5);
+  }
+</style>
+<style>
+select {
+	margin-left: 1px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 312px;
+    padding-left: 5px;
+    font-size: 18px;
+    border: 0px solid #ccc;
+    height: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+select:invalid { color: #6B7373; }
+</style>
+<?php
+$r = mysql_query("select * from rapat where no_surat = '".$_GET['notulen']."'");
+$hasil = mysql_fetch_array($r);
+$nomor = $hasil['no_surat'];
+$hal = $hasil['hal'];
+$tmpt = $hasil['tempat'];
+$w_mulai = $hasil['waktu_mulai'];
+$w_selesai = $hasil['waktu_selesai'];
+$date=explode('/',$hasil['tanggal']);
+switch($date[1]){
+	case "01" : $date[1]="Januari";break;
+	case "02" : $date[1]="Februari";break;
+	case "03" : $date[1]="Maret";break;
+	case "04" : $date[1]="April";break;
+	case "05" : $date[1]="Mei";break;
+	case "06" : $date[1]="Juni";break;
+	case "07" : $date[1]="Juli";break;
+	case "08" : $date[1]="Agustus";break;
+	case "09" : $date[1]="September";break;
+	case "10" : $date[1]="Oktober";break;
+	case "11" : $date[1]="November";break;
+	case "12" : $date[1]="Desember";break;
+}
+$tgl=$date[0]." ".$date[1]." ".$date[2];
+?>
+<br><br/>
+<form name="form1" id="form1" method="post" action="" onsubmit="">
+<table width="100%"  border="0">
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="35%"><div class="style1">Nomor Rapat :<br /><input name="nomor" type="text" placeholder="Nomor Rapat" size="30" value="<?php echo $nomor;?>" readonly/></div></td>
+    <td width="8%">&nbsp;</td>
+	<td  width="54%"><div class="style1">Hal :<br /><input name="hal" type="text" placeholder="Hal" size="30" value="<?php echo $hal;?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+	<?php
+	$r = mysql_query("select nm_lengkap from user a, peserta_rapat b where a.nomor_induk=b.induk_peserta and b.no_rapat='".$_GET['notulen']."' and b.jabatan='1'");
+	$hasil = mysql_fetch_array($r);
+	$tgjwb=$hasil['nm_lengkap'];
+	?>
+    <td><div class="style1">Penanggungjawab Rapat :<br /><input name="penanggungjawab" type="text" placeholder="Penanggung Jawab" size="30" value="<?php echo $tgjwb;?>" readonly/></div></td>
+    <td></td>
+	<td><div class="style1">Waktu Rapat :<br /><input name="wakturapat" type="text" placeholder="Waktu Rapat" size="30" value="<?php echo str_replace(":",".",$w_mulai)." - ".str_replace(":",".",$w_selesai);?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><div class="style1">Tanggal Rapat :<br /><input name="haritgl" type="text" placeholder="Hari, Tanggal" size="30" value="<?php echo $tgl;?>" readonly/></div></td>
+    <td></td>
+	<td><div class="style1">Tempat Rapat :<br /><input name="tempatrapat" type="text" placeholder="Tempat Rapat" size="30" value="<?php echo $tmpt;?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><div class="style1">Kehadiran Peserta :<br /><div id="psrapat" class="combobackground" style="height: 8em; width: 20em; overflow: auto;">
+	<?php
+	$result=mysql_query("select a.*,b.nm_lengkap from peserta_rapat a, user b where a.induk_peserta=b.nomor_induk and a.no_rapat='".$_GET['notulen']."' and a.hadir='1'");
+		while($nama = mysql_fetch_array($result)){
+			echo '<input id="'.$nama[nm_lengkap].'" type="checkbox" name="peserta[]" value="'.$nama[induk_peserta].'" />
+				<label for="'.$nama[nm_lengkap].'"><span class="style2">'.$nama[nm_lengkap].'</span></label>
+				<br/>';
+		}
+	?>
+	</div></div></td>
+    <td></td>
+	<td></td>
+  </tr>
+</table>
+<br>
+<br />
+<table width="100%"  border="0">
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Pembahasan Rapat : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="bahas_rapat" name="bahas_rapat"><?php
+	$r = mysql_query("select * from coba");
+	$hasil = mysql_fetch_array($r);
+	echo $hasil['text'];
+	?></textarea>
+	</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Kesimpulan : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="kesimpulan" name="kesimpulan"></textarea></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Rekomendasi : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="rekomendasi" name="rekomendasi"></textarea></td>
+  </tr>
+</table>
+<br>
+<table width="100%" >
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><table width="100%" >
+      <tr>
+        <td width="33%"><div align="right">
+          <input type="checkbox" name="checkbox" value="checkbox" />
+        </div></td>
+        <td width="67%"><span class="style4">Saya menyetujui sesuai dengan isi rapat di atas </span></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><div align="right">
+      <input type="submit" name="Submit" value="Submit" />
+</div></td>
+  </tr>
+</table>
+</form>
+<script>
+	CKEDITOR.replace( 'bahas_rapat' );
+	CKEDITOR.replace( 'kesimpulan' );
+	CKEDITOR.replace( 'rekomendasi' ); 
+</script>
+
+<?php
+if(isset($_POST[Submit])){
+	$editor_data =  str_replace('\\','',($_POST[bahas_rapat]));
+	$kesimpulan_data =  str_replace('\\','',($_POST[kesimpulan_rapat]));
+	$rekomendasi_data =  str_replace('\\','',($_POST[rekomendasi_rapat]));
+	//echo '<br>';
+	//echo $editor_data;
+	$query="insert into coba values ('$editor_data')";
+	mysql_query($query);
+
+}
+?>
+</body>
+</html>
