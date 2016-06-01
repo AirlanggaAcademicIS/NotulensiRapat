@@ -1,0 +1,353 @@
+<?php include("koneksi.php");?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<script src='lib/ckeditor/ckeditor.js'></script>
+<link href="lib/buttons.css" rel="stylesheet">
+<script type="text/javascript">
+function validator(){
+if(!form1.checkbox.checked){
+	alert("Setujui Notulen Rapat");
+	return (false);
+}
+return (true);
+}
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#attach").click(function(){
+		var nomor = $("#nomor").val();
+		$.ajax({
+		url: "upload_dokumen.php",
+		data: "nomor="+nomor,
+		cache: false,
+		success: function(msg){
+		$("#file_attach").html(msg);
+		}
+		});
+		});
+		});
+</script>
+<script type="text/javascript">
+
+function show()
+{
+   var n = document.form1.jumfile.value; //dwdwdw
+   var i;
+   var string = "";
+   
+   for (i=0; i<=n-1; i++)
+   {
+      string = string + "<span class='style6'>Pilih File: </span><input name=\"userfile"+ i + "\" type=\"file\"><br>";
+   }
+   
+   document.getElementById('selectfile').innerHTML = string;
+   document.form1.n.value = n;
+}
+
+</script>
+  <style type="text/css">
+<!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+.style4 {font-family: Arial, Helvetica, sans-serif; font-size: 16px; }
+.style5 {font-family: Arial, Helvetica, sans-serif; font-size: 18px; }
+.style6 {font-family: Arial, Helvetica, sans-serif; font-size: 14px; }
+.combobackground { background-color: rgba(255, 255, 255, 0.5); }
+-->
+  </style>
+</head>
+<body>
+
+<style type="text/css">
+  input[type="text"] {
+    border: 0;
+	padding-left: 10px;
+	font:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	background-color: rgba(255, 255, 255, 0.5);
+  }
+</style>
+<style>
+select {
+	margin-left: 1px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 30px;
+    padding-left: 5px;
+    font-size: 18px;
+    border: 0px solid #ccc;
+    height: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+select:invalid { color: #6B7373; }
+</style>
+<?php
+$r = mysql_query("select * from rapat where no_surat = '".$_GET['notulen']."'");
+$hasil = mysql_fetch_array($r);
+$nomor = $hasil['no_surat'];
+$hal = $hasil['hal'];
+$tmpt = $hasil['tempat'];
+$w_mulai = $hasil['waktu_mulai'];
+$w_selesai = $hasil['waktu_selesai'];
+$pmbhs= $hasil['pembahasan_rapat'];
+$date=explode('-',$hasil['tanggal']);
+switch($date[1]){
+	case "01" : $date[1]="Januari";break;
+	case "02" : $date[1]="Februari";break;
+	case "03" : $date[1]="Maret";break;
+	case "04" : $date[1]="April";break;
+	case "05" : $date[1]="Mei";break;
+	case "06" : $date[1]="Juni";break;
+	case "07" : $date[1]="Juli";break;
+	case "08" : $date[1]="Agustus";break;
+	case "09" : $date[1]="September";break;
+	case "10" : $date[1]="Oktober";break;
+	case "11" : $date[1]="November";break;
+	case "12" : $date[1]="Desember";break;
+}
+$tgl=$date[2]." ".$date[1]." ".$date[0];
+?>
+<br><br/>
+<form name="form1" id="form1" enctype="multipart/form-data" method="post" action="" onsubmit="return validator()">
+<table width="100%"  border="0">
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="35%"><div class="style1">Nomor Rapat :<br /><input id="nomor" name="nomor" type="text" placeholder="Nomor Rapat" size="30" value="<?php echo $nomor;?>" readonly/></div></td>
+    <td width="8%">&nbsp;</td>
+	<td  width="54%"><div class="style1">Hal :<br /><input name="hal" type="text" placeholder="Hal" size="30" value="<?php echo $hal;?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+	<?php
+	$r = mysql_query("select nm_lengkap from user a, peserta_rapat b where a.nomor_induk=b.induk_peserta and b.no_rapat='".$_GET['notulen']."' and b.jabatan='1'");
+	$hasil = mysql_fetch_array($r);
+	$tgjwb=$hasil['nm_lengkap'];
+	?>
+    <td><div class="style1">Penanggungjawab Rapat :<br /><input name="penanggungjawab" type="text" placeholder="Penanggung Jawab" size="30" value="<?php echo $tgjwb;?>" readonly/></div></td>
+    <td></td>
+	<td><div class="style1">Waktu Rapat :<br /><input name="wakturapat" type="text" placeholder="Waktu Rapat" size="30" value="<?php echo str_replace(":",".",$w_mulai)." - ".str_replace(":",".",$w_selesai);?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><div class="style1">Tanggal Rapat :<br /><input name="haritgl" type="text" placeholder="Hari, Tanggal" size="30" value="<?php echo $tgl;?>" readonly/></div></td>
+    <td></td>
+	<td><div class="style1">Tempat Rapat :<br /><input name="tempatrapat" type="text" placeholder="Tempat Rapat" size="30" value="<?php echo $tmpt;?>" readonly/></div></td>
+  </tr>
+  <tr>
+    <td><div align="right"></div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td valign="top"><div class="style1">Pembahasan Rapat :<br />
+	<textarea name="list_bahas" id="list_bahas" style="width: 310px; height: 145px; border: 0; padding-left: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 18px;background-color: rgba(255, 255, 255, 0.5); resize:none;" readonly><?php
+		$r = mysql_fetch_array(mysql_query("select * from rapat where no_surat = '".$_GET['notulen']."'"));
+		echo $r['pembahasan_rapat'];
+		?></textarea>
+    </div>
+    </td>
+    <td></td>
+	<td valign="top"><div class="style1">Kehadiran Peserta :<br /><div id="psrapat" class="combobackground" style="height: 8em; width: 20em; overflow: auto;">
+	<?php
+	$result=mysql_query("select a.*,b.nm_lengkap from peserta_rapat a, user b where a.induk_peserta=b.nomor_induk and a.no_rapat='".$_GET['notulen']."' and a.hadir='1' and a.jabatan!='1' and a.jabatan!='2'");
+		while($nama = mysql_fetch_array($result)){
+			echo '<input id="'.$nama[nm_lengkap].'" type="checkbox" name="peserta[]" value="'.$nama[induk_peserta].'" />
+				<label for="'.$nama[nm_lengkap].'"><span class="style2">'.$nama[nm_lengkap].'</span></label>
+				<br/>';
+		}
+	?>
+	</div>
+	</div></td>
+  </tr>
+</table>
+<br>
+<br />
+<table width="100%"  border="0">
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Isi Rapat : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="bahas_rapat" name="bahas_rapat"></textarea>
+	</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+	<td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Kesimpulan : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="kesimpulan" name="kesimpulan"></textarea></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%"><span class="style5">Rekomendasi : </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><textarea id="rekomendasi" name="rekomendasi"></textarea></td>
+  </tr>
+</table>
+<br>
+<table width="100%"  border="0">
+  <tr>
+    <td width="3%">&nbsp;</td>
+    <td width="97%" valign="top"><span class="style1">Dokumen pendukung 
+        <input id="attach" class="round yellow button" type="button" value="Attach File" />
+      (Word, Excel, PDF, dsb.) </span></td>
+  </tr>
+</table>
+<div id="file_attach"></div>
+<input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
+
+	
+	  <table width="100%"  border="0">
+        <tr>
+          <td width="3%">&nbsp;</td>
+          <td width="97%"><div id="selectfile"></div></td>
+        </tr>
+      </table>
+	
+
+    <br>
+	<input type="hidden" name="n"/>
+<table width="100%" >
+  <tr>
+  	<td width="92%"></td>
+    <td width="8%">&nbsp;</td>
+  </tr>
+  <tr>
+  	<td>
+	<table width="100%" >
+      <tr>
+        <td width="33%"><div align="right">
+          <input type="checkbox" name="checkbox" id="checkbox" value="checkbox" />
+        </div></td>
+        <td width="67%"><span class="style4">Saya menyetujui sesuai dengan isi rapat di atas </span></td>
+      </tr>
+    </table>
+	</td>
+    <td></td>
+  </tr>
+  <tr>
+  	<td>
+	</td>
+   	<td></td>
+  </tr>
+  </tr>
+  <tr>
+  	<td>
+	<br><div align="right">
+      <input class="medium blue button" type="submit" name="Submit" value="Submit" />
+	</div>
+	</td>
+   	<td><br></td>
+  </tr>
+  </tr>
+  <tr>
+  	<td><br /></td>
+   	<td><br /></td>
+  </tr>
+</table>
+</form>
+<script>
+	CKEDITOR.replace( 'bahas_rapat' );
+	CKEDITOR.replace( 'kesimpulan' );
+	CKEDITOR.replace( 'rekomendasi' ); 
+</script>
+
+<?php
+//Upload Dokumen Pendukung	   
+$n = $_POST['n']; 
+ 
+// setting nama folder tempat upload
+$uploaddir = 'dokumen_pendukung/'.str_replace("/","",$_GET['notulen']).'/';
+if(isset($_POST[Submit])){
+	$berhasil=true;
+	$bahas_rapat =  str_replace('\\','',($_POST['bahas_rapat']));
+	$kesimpulan =  str_replace('\\','',($_POST['kesimpulan']));
+	$rekomendasi =  str_replace('\\','',($_POST['rekomendasi']));
+	$query="update rapat set isi_rapat='$bahas_rapat',kesimpulan='$kesimpulan',rekomendasi='$rekomendasi',status='2' where no_surat='".$_GET['notulen']."'";
+	mysql_query($query);
+	if(mysql_errno()){
+		$berhasil=false;
+	}
+	$query="update peserta_rapat set hadir='0' where no_rapat='".$_GET['notulen']."' and jabatan!='1' and jabatan!='2'";
+	mysql_query($query);
+	if(mysql_errno()){
+		$berhasil=false;
+	}
+	$peserta = $_POST['peserta'];
+	$length = count($peserta);
+   for($x = 0; $x < $length; $x++) {
+	   $query="update peserta_rapat set hadir='1' where no_rapat='".$_GET['notulen']."' and induk_peserta='$peserta[$x]';";
+	   mysql_query($query);
+	   if(mysql_errno()){
+       		$berhasil=false;
+	   }
+   }
+for ($i=0; $i<=$n-1; $i++){ 
+  // membaca nama file yang diupload
+  $fileName = $_FILES['userfile'.$i]['name'];    
+
+  // membaca ukuran file yang diupload
+  $fileSize = $_FILES['userfile'.$i]['size'];
+  
+  // nama file temporary yang akan disimpan di server
+  $tmpName  = $_FILES['userfile'.$i]['tmp_name']; 
+  
+  // menggabungkan nama folder dan nama file
+  $uploadfile = $uploaddir . $fileName;
+ 
+  // proses upload file ke folder 'data'
+  if ($fileSize > 0){
+	if ( ! is_dir($uploaddir)) {
+		mkdir($uploaddir);
+	}
+	  if (move_uploaded_file($tmpName, $uploadfile)) {
+		  $query="insert into upload_file values ('".$_GET['notulen']."','$uploadfile')";
+			mysql_query($query);
+			if(mysql_errno()){
+				$berhasil=false;
+			}
+	  } 
+	  else {
+       $berhasil=false;
+  	  }
+  }
+}
+if($berhasil){
+?>
+	<script>alert("Berhasil Membuat Notulen Rapat dan Dikirim ke Ketua Prodi");</script>
+	<script>window.location="?id=1";</script>
+<?php
+}
+}
+?>
+</body>
+</html>
