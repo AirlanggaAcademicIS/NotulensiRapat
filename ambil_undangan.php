@@ -42,14 +42,17 @@ $r = mysql_query("SELECT * FROM rapat where status='0'");
 while($hasil = mysql_fetch_array($r)){
 	?>
 	<tr>
-	<td width="65%"><p>Nomor Surat : <?php echo $hasil['no_surat'];?></p>
+	<td width="20%"><p>Nomor Surat : <?php echo $hasil['no_surat'];?></p>
 	<p>Judul Pembahasan : <?php echo $hasil['pembahasan_rapat'];?></p>
 	<p>Waktu Rapat : <?php echo $hasil['tanggal'];?></p>
 	<p>Tempat : <?php echo $hasil['tempat'];?></p>
 	
 	</td>
 	
-	<td width="75%"  align="center" valign="middle"><div align="center"><p><a href='hal_kaprodi.php?konf=<?php echo $hasil['no_surat'];?>'><img src="image/konfirmasi_button.png" width="100" height="32"></a></div></p></td>
+	<td width="34%"><div align="center">
+      <p>&nbsp;</p>
+      <p><a class="round medium green button" href='?hadir=<?php echo $hasil['no_surat'];?>'>Lihat</a></p>
+    </div></td>
 	
 	
 </tbody>
@@ -57,6 +60,7 @@ while($hasil = mysql_fetch_array($r)){
 <?php   
 }
 ?>
+	
 
 </div>
       <div class="col-md-12 text-center">
@@ -177,3 +181,4 @@ $(document).ready(function(){
 
 </body>
 </html>
+
