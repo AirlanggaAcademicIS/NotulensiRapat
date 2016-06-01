@@ -1,0 +1,731 @@
+<?php 
+error_reporting(0);
+include("koneksi.php");
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="datepicker/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="timepicker/jquery.timepicker.min.css" />
+<script src="http://code.jquery.com/jquery-1.12.1.min.js"></script>
+<script type="text/javascript" src="combo_bertingkat/jquery.js"></script>
+<script src="datepicker/jquery-ui.js"></script>
+<script type="text/javascript" src="timepicker/jquery.timepicker.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#tanggal').datepicker({
+			dateFormat : "dd/mm/yy",
+			changeMonth : true,
+			changeYear : true
+			});
+		$('#waktu_mulai').timepicker({ timeFormat: 'HH:mm', interval: 15 });
+		$('#waktu_selesai').timepicker({ timeFormat: 'HH:mm', interval: 15 });
+		$("#penanggungjawab").change(function(){
+		var penanggungjawab = $("#penanggungjawab").val();
+		$.ajax({
+		url: "combo_bertingkat/ambilnotulen.php",
+		data: "penanggungjawab="+penanggungjawab,
+		cache: false,
+		success: function(msg){
+		$("#notulen").html(msg);
+		}
+		});
+		});
+		$("#notulen").change(function(){
+		var penanggungjawab = $("#penanggungjawab").val();
+		var notulen = $("#notulen").val();
+		var nomor = $("#nosurat").val();
+		$.ajax({
+		url: "combo_bertingkat/ambilpeserta2.php",
+		data: {penanggungjawab,notulen,nomor},
+		cache: false,
+		success: function(msg){
+		$("#psrapat").html(msg);
+		}
+		});
+		});
+		});
+		function validator(){
+			if (form1.penanggungjawab.value == 'Penanggung Jawab'){
+			   alert("Pilih Penanggungjawab Rapat");
+			   form1.penanggungjawab.focus();
+			   return (false);
+			}
+			if (form1.notulen.value == 'Notulen'){
+			   alert("Pilih Notulen Rapat");
+			   form1.notulen.focus();
+			   return (false);
+			}
+			var checkboxs=document.getElementsByName("peserta[]");
+    		var okay=false;
+    		for(var i=0,l=checkboxs.length;i<l;i++){
+		        if(checkboxs[i].checked){
+		            okay=true;
+            		break;
+        		}
+    		}
+    		if(!okay){
+				alert("Pilih Peserta Rapat");
+				return (false);
+			}
+    		if(!form1.verifikasi.checked){
+		    	alert("Setujui Verifikasi Undangan Rapat");
+				return (false);
+        	}
+			return (true);
+        }
+</script>
+<style type="text/css">
+<!--
+.combobackground { background-color: rgba(255, 255, 255, 0.5); }
+.style2 {font-family: Arial, Helvetica, sans-serif}
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+</head>
+<body>
+<style type="text/css">
+  input[type="text"] {
+    border: 0;
+	padding-left: 10px;
+	font:Arial, Helvetica, sans-serif;
+	font-size:20px;
+	background-color: rgba(255, 255, 255, 0.5);
+  }
+</style>
+<link href="lib/buttons.css" rel="stylesheet">
+<style>
+select {
+	margin-left: 2px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 312px;
+    padding-left: 10px;
+    font-size: 18px;
+    border: 0px solid #ccc;
+    height: 30px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+select:invalid { color: #6B7373; }
+</style>
+<br />
+<br />
+<?php
+$r = mysql_query("select * from rapat where no_surat = '".$_GET['konf']."'");
+$hasil = mysql_fetch_array($r);
+$nomor = $hasil['no_surat'];
+$hal = $hasil['hal'];
+$a=explode("-",$hasil['tanggal']);
+$tgl = $a[2]."/".$a[1]."/".$a[0];
+$tmpt = $hasil['tempat'];
+$w_mulai = $hasil['waktu_mulai'];
+$w_selesai = $hasil['waktu_selesai'];
+$pmbhs = $hasil['pembahasan_rapat'];
+?>
+<form name="form1" id="form1" method="post" action="" onsubmit="return validator()">
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="49%" rowspan="2" valign="top"><table width="378" border="0" cellspacing="0" cellpadding="0">
+      <tr height="30">
+        <td width="31">&nbsp;</td>
+        <td width="347"><span class="style2">&nbsp;No. Surat :</span> 
+		</br>
+            <input name="nosurat" id="nosurat" type="text" placeholder="Nomor Surat" size="30" oninvalid="this.setCustomValidity('Isikan Nomor Surat')" oninput="setCustomValidity('')" value="<?php echo $_GET['konf'];?>" readonly/></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Hal :</span> 
+		</br>
+            <input name="hal" type="text" placeholder="Hal" size="30" oninvalid="this.setCustomValidity('Isikan Hal Surat')" oninput="setCustomValidity('')" value="<?php echo $hal; ?>" required/></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Tanggal Rapat :</span> 
+		</br>
+            <input name="tanggal" type="text" placeholder="Hari Tanggal" size="30" id="tanggal" oninvalid="this.setCustomValidity('Pilih Tanggal Rapat')" onchange="setCustomValidity('')" value="<?php echo $tgl; ?>" autocomplete="off" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 280px; top: -26px;"><img src="image/tgl.png" width="28" height="25" /></div>
+		</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Tempat Rapat :</span> 
+		</br>
+            <input name="tempat" type="text" placeholder="Tempat Rapat" size="30" oninvalid="this.setCustomValidity('Isikan Tempat Rapat')" oninput="setCustomValidity('')" value="<?php echo $tmpt; ?>" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 285px; top: -27px;"><img src="image/tempat.png" width="22" height="28" /></div>
+		</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Waktu Mulai Rapat :</span> 
+		</br>
+            <input name="waktu_mulai" type="text" placeholder="Waktu Mulai Rapat" size="30" id="waktu_mulai" value="<?php echo $w_mulai; ?>" autocomplete="off" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 280px; top: -28px;"><img src="image/jam.png" width="29" height="28" /></div>
+		</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+	  <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Waktu Selesai Rapat :</span> 
+		</br>
+            <input name="waktu_selesai" type="text" placeholder="Waktu Selesai Rapat" size="30" id="waktu_selesai" value="<?php echo $w_selesai; ?>" autocomplete="off" required/>
+			<div style="position:relative; width:0px; height:0px; z-index:1; left: 280px; top: -28px;"><img src="image/jam.png" width="29" height="28" /></div>
+		</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Penanggungjawab Rapat :</span> 
+		</br>
+            <select name="penanggungjawab" id="penanggungjawab" oninvalid="this.setCustomValidity('Pilih Penanggungjawab Rapat')" onchange="setCustomValidity('')" required>
+			<optgroup style="max-height: 80px;">
+			<?php
+			$r = mysql_fetch_array(mysql_query("select induk_peserta from peserta_rapat where no_rapat = '".$_GET['konf']."' and jabatan = '1'"));
+			$tgjwb = $r['induk_peserta'];
+			$r2 = mysql_fetch_array(mysql_query("SELECT * FROM user where nomor_induk = '$tgjwb'"));
+			echo "<option selected value=\"$r2[nomor_induk]\">$r2[nm_lengkap]</option>\n";
+			$result=mysql_query("SELECT * FROM user where otoritas != '1' and nomor_induk != '$tgjwb'");
+			while($nama = mysql_fetch_array($result)){
+				echo "<option value=\"$nama[nomor_induk]\">$nama[nm_lengkap]</option>\n";
+			}
+			?>
+			</optgroup>
+			</select>
+	   </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr height="30">
+        <td width="10">&nbsp;</td>
+        <td><span class="style2">&nbsp;Notulen Rapat :</span> 
+		</br>
+            <select id="notulen" name="notulen" oninvalid="this.setCustomValidity('Pilih Notulen Rapat')" onchange="setCustomValidity('')" required>
+			<optgroup style="max-height: 80px;">
+    		<?php
+			$r = mysql_fetch_array(mysql_query("select induk_peserta from peserta_rapat where no_rapat = '".$_GET['konf']."' and jabatan = '2'"));
+			$notulen = $r['induk_peserta'];
+			$r2 = mysql_fetch_array(mysql_query("SELECT * FROM user where nomor_induk = '$notulen'"));
+			echo "<option selected value=\"$r2[nomor_induk]\">$r2[nm_lengkap]</option>\n";
+			$result=mysql_query("SELECT * FROM user where otoritas != '1' and nomor_induk != '$tgjwb' and nomor_induk != '$notulen'");
+			while($nama = mysql_fetch_array($result)){
+				echo "<option value=\"$nama[nomor_induk]\">$nama[nm_lengkap]</option>\n";
+			}
+			?>
+			</optgroup>
+			</select>
+	   </td>
+      </tr>
+    </table></td>
+    <td valign="top"><table width="100%" >
+      <tr>
+        <td>
+          <table width="100%" >
+            <tr>
+              <td width="54%"><input type="text" placeholder="Pembahasan Rapat" size="31" onfocus="blur()"/>
+			  <div style="position:relative; width:0px; height:0px; z-index:1; left: 288px; top: -26px;"><img src="image/book.png" width="28" height="25" /></div>
+			  </td>
+            </tr>
+          </table></td>
+      </tr>
+	   <tr>
+        <td><textarea name="list_bahas" id="list_bahas" style="width: 310px; height: 100px; border: 0; padding-left: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 18px;background-color: rgba(255, 255, 255, 0.5); resize:none;" ><?php
+		$r = mysql_fetch_array(mysql_query("select * from rapat where no_surat = '".$_GET['konf']."'"));
+		echo $r['pembahasan_rapat'];
+		?></textarea>
+		</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td valign="top"><table width="100%" >
+      <tr>
+        <td><input type="text" placeholder="Peserta Rapat" size="31" onfocus="blur()"/>
+		<div id="peserta_icon" style="position:relative; width:0px; height:0px; z-index:1; left: 285px; top: -28px;"><img src="image/peserta.png" width="30" height="30" /></div>
+		</td>
+      </tr>
+      <tr>
+        <td>
+		<div id="psrapat" class="combobackground" style="height: 8em; width: 20em; overflow: auto;">
+		<?php
+		$result=mysql_query("select * from (SELECT * FROM user WHERE nomor_induk != '$tgjwb' and nomor_induk != '$notulen' and otoritas != '1') a left join peserta_rapat b on a.nomor_induk=b.induk_peserta and b.no_rapat='".$_GET['konf']."'");
+		while($nama = mysql_fetch_array($result)){
+			if($nama['jabatan'] == 3){
+				echo '<input id="'.$nama[nm_lengkap].'" type="checkbox" name="peserta[]" value="'.$nama[nomor_induk].'" checked/>
+					<label for="'.$nama[nm_lengkap].'"><span class="style2">'.$nama[nm_lengkap].'</span></label>
+					<br/>';
+			}
+			else{
+				echo '<input id="'.$nama[nm_lengkap].'" type="checkbox" name="peserta[]" value="'.$nama[nomor_induk].'"/>
+					<label for="'.$nama[nm_lengkap].'"><span class="style2">'.$nama[nm_lengkap].'</span></label>
+					<br/>';
+			}
+		}
+		?>
+		</div>
+		</td>
+      </tr>
+	  <tr>
+        <td>&nbsp;</td>
+      </tr>
+	  <tr>
+        <td>
+			<input name="verifikasi" type="checkbox" id="verifikasi" value="verifikasi" /> 
+			<span class="style2">Saya menyetujui sesuai isi surat di atas</span></td>
+      </tr>
+    </table>    
+      
+  </tr>
+</table>
+
+<table width="100%" >
+  <tr>
+    <td width="88%">
+		<div align="right">
+        	<input type="submit" name="Submit" value="Verifikasi" class="medium blue button"/>
+      	</div>
+	 </td>
+    <td width="12%"></td>
+  </tr>
+</table>
+<table width="100%" >
+  <tr><td width="100%">&nbsp;</td>
+  </tr>
+</table>
+</form>
+<?php
+require_once('tcpdf/tcpdf_include.php');
+
+// create new PDF document
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+// set document information
+
+$pdf->SetCreator(PDF_CREATOR);
+$pdf->SetAuthor('Rivanda');
+$pdf->SetTitle('UNIVERSITAS AIRLANGGA');
+$pdf->SetSubject('Surat');
+$pdf->SetKeywords('TCPDF, PDF, Undangan, Surat, Simpan');
+
+// set default header data
+//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE, PDF_HEADER_STRING);
+$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, '', '');
+
+// set header and footer fonts
+$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+// set default monospaced font
+$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+// set margins
+$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+// set auto page breaks
+$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+// set image scale factor
+$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+// set some language-dependent strings (optional)
+if (@file_exists(dirname(__FILE__).'/tcpdf/lang/eng.php')) {
+	require_once(dirname(__FILE__).'/tcpdf/lang/eng.php');
+	$pdf->setLanguageArray($l);
+}
+
+// ---------------------------------------------------------
+
+// set font
+$pdf->SetFont('dejavusans', '', 10);
+
+// add a page
+$pdf->AddPage();
+
+// writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+// writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+// create some HTML content
+$date=explode('/',$_POST['tanggal']);
+$hari=date("N", mktime(0, 0, 0, $date[1], $date[0], $date[2]));
+switch($hari){
+	case 1 : $hari="Senin";break;
+	case 2 : $hari="Selasa";break;
+	case 3 : $hari="Rabu";break;
+	case 4 : $hari="Kamis";break;
+	case 5 : $hari="Jum'at";break;
+	case 6 : $hari="Sabtu";break;
+	case 7 : $hari="Minggu";break;
+}
+switch($date[1]){
+	case "01" : $date[1]="Januari";break;
+	case "02" : $date[1]="Februari";break;
+	case "03" : $date[1]="Maret";break;
+	case "04" : $date[1]="April";break;
+	case "05" : $date[1]="Mei";break;
+	case "06" : $date[1]="Juni";break;
+	case "07" : $date[1]="Juli";break;
+	case "08" : $date[1]="Agustus";break;
+	case "09" : $date[1]="September";break;
+	case "10" : $date[1]="Oktober";break;
+	case "11" : $date[1]="November";break;
+	case "12" : $date[1]="Desember";break;
+}
+$mnth = array(1 => "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+$today = date("j ") . $mnth[(int)date('m')] . date(" Y");
+$tgl=$hari.", ".$date[0]." ".$date[1]." ".$date[2];
+
+if(isset($_POST['Submit'])){
+$berhasil=true;
+$query="delete from peserta_rapat where no_rapat='$_POST[nosurat]'";
+mysql_query($query);
+if(mysql_errno()){
+	$berhasil=false;
+}
+$query="insert into peserta_rapat values ('$_POST[nosurat]','1','$_POST[penanggungjawab]','0','0','')";
+mysql_query($query);
+if(mysql_errno()){
+	$berhasil=false;
+}
+$query="insert into peserta_rapat values ('$_POST[nosurat]','2','$_POST[notulen]','0','0','')";
+mysql_query($query);
+if(mysql_errno()){
+	$berhasil=false;
+}
+$peserta = $_POST['peserta'];
+$length = count($peserta);
+   for($x = 0; $x < $length; $x++) {
+	   $query="insert into peserta_rapat values ('$_POST[nosurat]','3','$peserta[$x]','0','0','')";
+	   mysql_query($query);
+	   if(mysql_errno()){
+       		$berhasil=false;
+	   }
+   }
+$a=explode("/",$_POST[tanggal]);
+$tg = $a[2]."-".$a[1]."-".$a[0];
+$link_surat=str_replace('/', '', $_POST[nosurat]).".pdf";
+$pdf_name="pdf_output/".$link_surat;
+$query="update rapat set no_surat='$_POST[nosurat]',hal='$_POST[hal]',tanggal='$tg',tempat='$_POST[tempat]',waktu_mulai='$_POST[waktu_mulai]',waktu_selesai='$_POST[waktu_selesai]',pembahasan_rapat='$_POST[list_bahas]',link_surat='$link_surat',status='1' where no_surat='$_POST[nosurat]'";
+mysql_query($query);
+if(mysql_errno()){
+	$berhasil=false;
+}
+if($berhasil){
+?>
+	<script>alert("Berhasil Verifikasi Undangan Rapat dan Telah dikirim ke Peserta");</script>
+<?php
+error_reporting(0);
+include("phpmailer/classes/class.phpmailer.php");
+$mail = new PHPMailer();
+$mail->IsMail();
+$mail->From       = "tatausaha@notulensirapat.esy.es";
+$mail->FromName   = "Notulensi Rapat";
+$mail->Subject = "Undangan Rapat";
+$i=1;
+$peserta="";
+$r = mysql_query("select a.nm_lengkap, a.email from user a, rapat b, peserta_rapat c where a.nomor_induk=c.induk_peserta and c.no_rapat=b.no_surat and b.no_surat='".$_GET['konf']."'");
+while($hasil = mysql_fetch_array($r)){
+	$mail->AddAddress($hasil['email']);
+	if($i==1){
+		$peserta=$peserta.$i.". ".$hasil['nm_lengkap'];
+	}
+	else{
+		$peserta=$peserta."<br>".$i.". ".$hasil['nm_lengkap'];
+	}
+	$i++;
+}
+$html = '
+<table width="100%"  border="0">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><div align="right">Surabaya, '.$today.'</div></td>
+  </tr>
+  <tr>
+    <td><table width="100%"  border="0">
+      <tr>
+        <td width="90%">Nomor</td>
+        <td width="10%">:</td>
+      </tr>
+    </table></td>
+    <td><table width="100%"  border="0">
+      <tr>
+        <td>'.$_POST['nosurat'].'</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%"  border="0">
+      <tr>
+        <td width="90%">Lamp</td>
+        <td width="10%">:</td>
+      </tr>
+    </table></td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td><table width="100%"  border="0">
+      <tr>
+        <td width="90%">Hal</td>
+        <td width="10%">:</td>
+      </tr>
+    </table></td>
+    <td><strong>'.$_POST['hal'].'</strong></td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><strong>Kepada Yth.: </strong></td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">'.$peserta.' </td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">Prodi S1 Sistem Informasi - FST Unair</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">Mengharap kehadiran Bapak/Ibu pada : </td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><table width="100%"  border="0">
+      <tr>
+        <td width="4%">&nbsp;</td>
+        <td width="96%"><table width="100%"  border="0">
+          <tr>
+            <td width="25%">Hari/Tanggal</td>
+            <td width="2%">:</td>
+            <td width="73%">'.$tgl.' </td>
+          </tr>
+          <tr>
+            <td>Pukul</td>
+            <td>:</td>
+            <td>'.str_replace(":", ".", $_POST['waktu_mulai']).' - Selesai </td>
+          </tr>
+          <tr>
+            <td>Tempat</td>
+            <td>:</td>
+            <td>'.$_POST['tempat'].' </td>
+          </tr>
+          <tr>
+            <td valign="top">Acara</td>
+            <td valign="top">:</td>
+            <td><strong>'.nl2br($_POST['list_bahas']).'</strong></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">Mengingat pentingnya acara tersebut, diharap hadir tepat waktu. </td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">Atas perhatian dan kehadirannya kami sampaikan terima kasih. </td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><div align="right">Ketua Prodi S1 Sistem Informasi, </div></td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><div align="right">Badrus Zaman, S.Kom., M.Cs.</div></td>
+  </tr>
+  <tr>
+    <td width="18%">&nbsp;</td>
+    <td width="82%"><div align="right">NIP. 197801262006041001</div></td>
+  </tr>
+</table>
+';
+
+// output the HTML content
+$pdf->writeHTML($html, true, false, true, false, '');
+
+// reset pointer to the last page
+//$pdf->lastPage();
+
+// ---------------------------------------------------------
+$pdf->Output($pdf_name, 'F');
+
+$mail->AddEmbeddedImage('phpmailer/image/header.png', 'header');
+$mail->Body = '
+<div align="center">
+  <table width="50%"  border="0">
+    <tr>
+      <td><img src="cid:header" width="700" height="102"></td>
+    </tr>
+	<tr>
+      <td>&nbsp;</td>
+    </tr>
+	<tr>
+      <td><div align="center"><span><strong>Undangan Rapat</strong></span></div></td>
+    </tr>
+    <tr>
+      <td><table width="100%"  border="0">
+			<tr>
+			  <td width="7%">&nbsp;</td>
+			  <td width="93%">&nbsp;</td>
+			</tr>
+			<tr>
+			  <td>&nbsp;</td>
+			  <td><div align="justify"><span class="style1">Anda diundang dalam rapat yang akan diadakan pada : </span></div></td>
+			</tr>
+			<tr>
+			  <td>&nbsp;</td>
+			  <td></td>
+			</tr>
+			<tr>
+			  <td>&nbsp;</td>
+			  <td>
+			  <table width="100%"  border="0">
+			  <tr>
+				<td width="25%">Hari/Tanggal</td>
+				<td width="2%">:</td>
+				<td width="73%">'.$tgl.' </td>
+			  </tr>
+			  <tr>
+				<td>Pukul</td>
+				<td>:</td>
+				<td>'.str_replace(":", ".", $_POST['waktu_mulai']).' - Selesai </td>
+			  </tr>
+			  <tr>
+				<td>Tempat</td>
+				<td>:</td>
+				<td>'.$_POST['tempat'].' </td>
+			  </tr>
+			  <tr>
+				<td valign="top">Acara</td>
+				<td valign="top">:</td>
+				<td><strong>'.nl2br($_POST['list_bahas']).'</strong></td>
+			  </tr>
+			</table>
+		  </td>
+        </tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><span class="style1">Silahkan buka aplikasi notulensi rapat dan masuk ke menu <strong>Konfirmasi Kehadiran</strong>.</span></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><span class="style1"><a href="http://notulensirapat.esy.es">www.notulensirapat.esy.es</a></span></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><span class="style1">Terima kasih. </span></td>
+		</tr>
+      </table></td>
+    </tr>
+  </table>
+</div>
+';
+$mail->IsHTML(true);
+$mail->addAttachment('pdf_output/'.$link_surat, 'Surat Undangan.pdf');
+$mail->Send();
+?>
+	<script>window.location="hal_kaprodi.php?id=1";</script>
+<?php
+}
+}
+?>
+</body>
+</html>
